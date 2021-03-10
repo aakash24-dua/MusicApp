@@ -1,0 +1,274 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:clickable="true"
+        android:focusable="true">
+
+
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clickable="true"
+            android:clipToPadding="false"
+            android:focusable="true"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageButton
+                android:id="@+id/back"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
+                android:background="@drawable/btn_ripple"
+                android:tint="@color/colorAccent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_back" />
+
+            <TextView
+                android:id="@+id/activity_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_10"
+                android:layout_marginEnd="@dimen/margin_10"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:maxLines="1"
+                android:padding="7dp"
+                android:textColor="@color/colorAccent"
+                android:textSize="@dimen/title_text_size"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toBottomOf="@+id/back"
+                app:layout_constraintStart_toEndOf="@+id/back"
+                app:layout_constraintTop_toTopOf="@+id/back" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <ImageView
+            android:id="@+id/now_playing_cover"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/_190sdp"
+            android:clickable="false"
+            app:layout_constraintTop_toBottomOf="@+id/toolbar"
+            android:contentDescription="@string/cover"
+            android:focusable="false"
+            android:src="@drawable/btn_ripple"
+            android:transitionName="now_cover"
+            />
+        <LinearLayout
+            android:id="@+id/info_container_names"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="29dp"
+            app:layout_constraintTop_toBottomOf="@+id/now_playing_cover"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            android:elevation="10dp"
+            android:orientation="vertical"
+            >
+
+            <TextView
+                android:id="@+id/song_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:elevation="10dp"
+                android:ellipsize="marquee"
+                android:gravity="center"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:paddingStart="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_10"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+
+                android:textColor="@color/colorTitleTextLight"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                 />
+
+            <TextView
+                android:id="@+id/album_title"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_marginTop="3dp"
+                android:layout_weight="1"
+                android:elevation="10dp"
+                android:gravity="center"
+                android:maxLines="1"
+                android:paddingStart="@dimen/margin_10"
+                android:paddingEnd="@dimen/margin_10"
+
+                android:textColor="@color/colorBodyTextLight"
+                android:textSize="@dimen/title_text_size"
+                />
+        </LinearLayout>
+        <!--android:text="@{song.title, default=Title}"
+        android:text="@{song.artist}"-->
+        <View
+            android:id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            android:clickable="true"
+            android:focusable="true"
+            app:layout_constraintBottom_toBottomOf="parent" />
+<!--        app:check_navbar_height="@{viewModel.isNavBarShown}"-->
+<!--        app:height="@{GeneralUtils.INSTANCE.screenWidth - (GeneralUtils.INSTANCE.screenWidth / 5) + 80}"-->
+
+        <RelativeLayout
+            android:id="@+id/info_container"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/margin_12"
+            android:layout_marginTop="29dp"
+            android:layout_marginEnd="@dimen/margin_12"
+            android:elevation="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/view">
+
+            <TextView
+                android:id="@+id/current_time"
+                android:layout_width="wrap_content"
+                android:layout_height="18dp"
+                android:layout_alignParentStart="true"
+                android:layout_marginStart="@dimen/margin_12"
+                android:layout_marginTop="@dimen/margin_8"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/colorBodyTextLight" />
+<!--            android:text="@{GeneralUtils.INSTANCE.formatMilliseconds(viewModel.time), default=@string/def_time}"-->
+
+
+            <LinearLayout
+                android:id="@+id/extra_info_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/margin_6"
+                android:background="@drawable/background_stroke"
+                android:clickable="false"
+                android:focusable="false"
+                android:paddingStart="@dimen/padding_14"
+                android:paddingTop="4dp"
+                android:paddingEnd="@dimen/padding_14"
+                android:paddingBottom="4.5dp">
+<!--                app:visible="@{settingsViewModel.isExtraInfo()}"-->
+
+                <TextView
+                    android:id="@+id/description"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:gravity="center"
+                    android:textColor="@color/colorBodyTextLight"
+                    android:textSize="@dimen/extra_info_text_size" />
+<!--                app:extra_info="@{viewModel.currentData.description}"-->
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/time_left"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/margin_8"
+                android:layout_marginEnd="@dimen/margin_12"
+                android:gravity="center"
+                android:maxLines="1"
+                android:textColor="@color/colorBodyTextLight"
+                tools:ignore="RelativeOverlap" />
+<!--            android:text="@{'-' + GeneralUtils.INSTANCE.formatMilliseconds(viewModel.currentData.duration - viewModel.time), default=@string/def_time}"-->
+
+            <rm.com.audiowave.AudioWaveView
+                android:id="@+id/seek_bar"
+                android:layout_width="match_parent"
+                android:layout_height="65dp"
+                android:layout_alignParentTop="true"
+                android:layout_marginTop="34dp"
+                app:animateExpansion="false"
+                app:chunkHeight="30dp"
+                app:chunkRadius="1dp"
+                app:chunkSpacing="1dp"
+                app:chunkWidth="2dp"
+                app:minChunkHeight="2dp"
+                app:waveColor="@color/colorAccent" />
+<!--            app:raw="@{viewModel.raw}"-->
+
+        </RelativeLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/margin_8"
+            android:elevation="10dp"
+            app:layout_constraintTop_toBottomOf="@+id/info_container">
+
+            <ImageButton
+                android:id="@+id/previous_btn"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
+                android:layout_marginEnd="16dp"
+                android:background="@drawable/btn_ripple_with_background"
+                android:contentDescription="@string/cover"
+                android:src="@drawable/ic_previous"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/play_container"
+                app:layout_constraintEnd_toStartOf="@id/play_container"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/play_container" />
+
+            <LinearLayout
+                android:id="@+id/play_container"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
+                android:layout_marginTop="5dp"
+                android:background="@drawable/btn_play_background"
+                android:clickable="true"
+                android:elevation="2dp"
+                android:focusable="true"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/play_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:contentDescription="@string/cover"
+                    android:focusable="false"
+                    android:scaleType="centerCrop"
+                    android:scaleX="0.6"
+                    android:scaleY="0.6"
+                    android:tint="@color/white"
+                    android:src="@drawable/ic_pause_notification"
+                    tools:ignore="RtlSymmetry" />
+
+            </LinearLayout>
+
+            <ImageButton
+                android:id="@+id/next_btn"
+                android:layout_width="@dimen/btn_size"
+                android:layout_height="@dimen/btn_size"
+                android:layout_marginStart="16dp"
+                android:background="@drawable/btn_ripple_with_background"
+                android:contentDescription="@string/cover"
+                android:src="@drawable/ic_skip"
+                android:tint="@color/colorAccent"
+                app:layout_constraintBottom_toBottomOf="@+id/play_container"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/play_container"
+                app:layout_constraintTop_toTopOf="@+id/play_container" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

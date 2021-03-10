@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    app:startDestination="@id/allTracksFragment"
+    android:id="@+id/nav_graph">
+
+    <fragment
+        android:id="@+id/allTracksFragment"
+        android:name="com.et.music.ui.fragments.AllTracksFragment"
+        android:label="Book Search Fragment"
+        tools:layout="@layout/fragment_all_tracks">
+    </fragment>
+
+    <fragment
+        android:id="@+id/playListFragment"
+        android:name="com.et.music.ui.fragments.PlayListFragment"
+        android:label="Book Search Fragment"
+        tools:layout="@layout/fragment_all_tracks">
+    </fragment>
+
+    <fragment
+        android:id="@+id/songDetailFragmentt"
+        android:name="com.et.music.ui.fragments.SongDetailFragment"
+        android:label="Book Search Fragment"
+        tools:layout="@layout/fragment_song_detail">
+    </fragment>
+
+    <action
+        android:id="@+id/action_global_songDetail"
+        app:popUpTo="@id/allTracksFragment"
+        app:destination="@id/songDetailFragmentt" />
+</navigation>
