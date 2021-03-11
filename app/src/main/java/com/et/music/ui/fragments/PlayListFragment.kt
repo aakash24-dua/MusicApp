@@ -28,7 +28,6 @@ class PlayListFragment : Fragment(), ItemClickListener<SongResponseItem> {
 
     private lateinit var playlistAdapter: PlaylistAdapter
     var onSongClick : OnSongClick? = null
-    private val preferences: SharedPreferences by inject()
     private val viewmodel: FragmentsViewmodel by viewModel()
 
     override fun onCreateView(
