@@ -25,7 +25,6 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class SongDetailFragment : Fragment() {
-    private val preferences: SharedPreferences by inject()
     private val viewmodel: FragmentsViewmodel by viewModel()
 
     override fun onCreateView(
@@ -41,17 +40,12 @@ class SongDetailFragment : Fragment() {
     lateinit var timer: CountDownTimer
     var millis: Long = 0
     var isPaused = false
-    lateinit var playList: ArrayList<SongResponseItem>
     var current = 0
 
-    private fun getPlayListFromPreferences(context: Context): ArrayList<SongResponseItem> {
-        val gson = Gson()
-        val type: Type = object : TypeToken<ArrayList<SongResponseItem?>?>() {}.type
-        return gson.fromJson(preferences.getString("playlist_arr", null), type)
-    }
+
 
     override fun onAttach(context: Context) {
-        playList = getPlayListFromPreferences(context)
+        viewmodel.playList = viewmodel.getPlayListFromPreferences()
         responseItem = arguments?.getParcelable("ata")
         super.onAttach(context)
     }
@@ -61,10 +55,10 @@ class SongDetailFragment : Fragment() {
         back.setOnClickListener{
             activity?.onBackPressed()
         }
-        playList.remove(responseItem)
+        viewmodel.playList.remove(responseItem)
         setData(responseItem)
-        playList.shuffle(Random())
-        playList.add(0, responseItem!!)
+        viewmodel.playList.shuffle(Random())
+        viewmodel.playList.add(0, responseItem!!)
         super.onViewCreated(view, savedInstanceState)
     }
 
@@ -89,9 +83,9 @@ class SongDetailFragment : Fragment() {
                     item?.duration!!.times(1000).minus(millis).toString()
                 )
                 // time_left.text = formatMilliseconds(responseItem?.duration!!*1000.minus(millis))
-                time_left?.text = formatMilliseconds(item?.duration!!.times(1000).toLong())
+                time_left?.text = viewmodel.formatMilliseconds(item?.duration!!.times(1000).toLong())
                 current_time?.text =
-                    formatMilliseconds(item?.duration!!.times(1000).minus(millis))
+                    viewmodel.formatMilliseconds(item?.duration!!.times(1000).minus(millis))
                 seek_bar?.progress = (item?.duration!!.minus(millis / 1000)).toFloat()
             }
 
@@ -101,35 +95,8 @@ class SongDetailFragment : Fragment() {
         }
         timer.start()
     }
-
-
-    fun formatMilliseconds(duration: Long): String {
-        val seconds = (duration / 1000).toInt() % 60
-        val minutes = (duration / (1000 * 60) % 60).toInt()
-        val hours = (duration / (1000 * 60 * 60) % 24).toInt()
-        "${timeAddZeros(hours, false)}:${timeAddZeros(minutes)}:${timeAddZeros(seconds)}".apply {
-            return if (startsWith(":")) replaceFirst(":", "") else this
-        }
-    }
-
-    private fun timeAddZeros(number: Int?, showIfIsZero: Boolean = true): String {
-        return when (number) {
-            0 -> if (showIfIsZero) "0${number}" else ""
-            1, 2, 3, 4, 5, 6, 7, 8, 9 -> "0${number}"
-            else -> number.toString()
-        }
-    }
-
-    private fun initSongDetailView() {
-
-    }
-
-
-
-
-
     private fun initViewComponents() {
-        time_left.text = formatMilliseconds(responseItem?.duration!! * 1000.minus(millis).toLong())
+        time_left.text = viewmodel.formatMilliseconds(responseItem?.duration!! * 1000.minus(millis).toLong())
         play_btn.setOnClickListener {
             if (!isPaused) {
                 play_btn.setImageResource(R.drawable.ic_play)
@@ -139,7 +106,7 @@ class SongDetailFragment : Fragment() {
                 play_btn.setImageResource(R.drawable.ic_pause_notification)
                 isPaused = false
                 timer.cancel()
-                instantiateTimer(millis, playList[current])
+                instantiateTimer(millis, viewmodel.playList[current])
             }
         }
 
@@ -147,7 +114,7 @@ class SongDetailFragment : Fragment() {
             timer.cancel()
             if (current != 0) {
                 current--
-                setData(playList[current])
+                setData(viewmodel.playList[current])
             }
             else
                 Toast.makeText(view?.context, "Disabled", Toast.LENGTH_SHORT).show()
@@ -155,11 +122,11 @@ class SongDetailFragment : Fragment() {
 
         next_btn.setOnClickListener {
             timer.cancel()
-            if (current+1 < playList.size) {
+            if (current+1 < viewmodel.playList.size) {
                 isPaused = false
                 play_btn.setImageResource(R.drawable.ic_pause_notification)
                 current++
-                setData(playList[current])
+                setData(viewmodel.playList[current])
             }
             else {
                 AlertDialog.Builder(view?.context!!)
@@ -167,7 +134,7 @@ class SongDetailFragment : Fragment() {
                     .setPositiveButton("Yes", DialogInterface.OnClickListener { dialog, which ->
                         dialog.dismiss()
                         current = 0
-                        setData(playList[current])
+                        setData(viewmodel.playList[current])
                     })
                     .setNegativeButton("No", DialogInterface.OnClickListener { dialog, which ->
                         dialog.dismiss()
@@ -177,6 +144,5 @@ class SongDetailFragment : Fragment() {
 
         }
 
-        initSongDetailView()
     }
 }

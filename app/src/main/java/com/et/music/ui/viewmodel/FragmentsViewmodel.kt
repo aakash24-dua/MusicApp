@@ -17,6 +17,7 @@ class FragmentsViewmodel(val preferences: SharedPreferences) : ViewModel() {
 
 
     var liveData = MutableLiveData<List<SongResponseItem>>()
+    lateinit var playList: ArrayList<SongResponseItem>
 
      fun readLine(inputS:InputStream?): List<String>? {
         val mLines: MutableList<String> = ArrayList()
@@ -47,6 +48,29 @@ class FragmentsViewmodel(val preferences: SharedPreferences) : ViewModel() {
         var ss:List<SongResponseItem>
         ss = gson.fromJson(preferences.getString("playlist_arr", null), type)
         liveData.postValue(ss)
+    }
+
+    fun getPlayListFromPreferences(): ArrayList<SongResponseItem> {
+        val gson = Gson()
+        val type: Type = object : TypeToken<ArrayList<SongResponseItem?>?>() {}.type
+        return gson.fromJson(preferences.getString("playlist_arr", null), type)
+    }
+
+    fun formatMilliseconds(duration: Long): String {
+        val seconds = (duration / 1000).toInt() % 60
+        val minutes = (duration / (1000 * 60) % 60).toInt()
+        val hours = (duration / (1000 * 60 * 60) % 24).toInt()
+        "${timeAddZeros(hours, false)}:${timeAddZeros(minutes)}:${timeAddZeros(seconds)}".apply {
+            return if (startsWith(":")) replaceFirst(":", "") else this
+        }
+    }
+
+    private fun timeAddZeros(number: Int?, showIfIsZero: Boolean = true): String {
+        return when (number) {
+            0 -> if (showIfIsZero) "0${number}" else ""
+            1, 2, 3, 4, 5, 6, 7, 8, 9 -> "0${number}"
+            else -> number.toString()
+        }
     }
 
 }
