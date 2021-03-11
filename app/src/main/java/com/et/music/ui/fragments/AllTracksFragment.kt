@@ -15,15 +15,18 @@ import com.et.music.adapter.AllTracksAdapter
 import com.et.music.ui.OnSongClick
 import com.et.music.ui.model.SongResponse
 import com.et.music.ui.model.SongResponseItem
+import com.et.music.ui.viewmodel.FragmentsViewmodel
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.fragment_all_tracks.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStreamReader
 
 
 class AllTracksFragment : Fragment(), ItemClickListener<SongResponseItem> {
+    private val viewmodel: FragmentsViewmodel by viewModel()
 
     private lateinit var allTracksAdapter: AllTracksAdapter
     var onSongClick: OnSongClick? = null
@@ -43,36 +46,19 @@ class AllTracksFragment : Fragment(), ItemClickListener<SongResponseItem> {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         init()
-        val list = Gson().fromJson(readLine("seed_data.txt")?.get(0), SongResponse::class.java)
+        val list = Gson().fromJson(readFile("seed_data.txt")?.get(0), SongResponse::class.java)
         allTracksAdapter.updateDataSet(list)
         super.onViewCreated(view, savedInstanceState)
     }
 
-
-    private fun readLine(path: String?): List<String>? {
-        val mLines: MutableList<String> = ArrayList()
+    private fun readFile(path:String?): List<String>?{
         val am: AssetManager? = activity?.assets
-        try {
-            val inputS = am?.open(path!!)
-            val stringBuilder = StringBuilder()
-            val reader = BufferedReader(InputStreamReader(inputS))
-            var string: String? = null
-            while (true) {
-                try {
-                    if (reader.readLine().also { string = it } == null) break
-                } catch (e: IOException) {
-                    e.printStackTrace()
-                }
-                stringBuilder.append(string).append("\n")
-                mLines.add(string!!)
-            }
-            inputS?.close()
-
-        } catch (e: IOException) {
-            e.printStackTrace()
-        }
-        return mLines
+        val inputS = am?.open(path!!)
+        return viewmodel.readLine(inputS)
     }
+
+
+
 
     private fun init() {
         allTracksAdapter = AllTracksAdapter().apply {

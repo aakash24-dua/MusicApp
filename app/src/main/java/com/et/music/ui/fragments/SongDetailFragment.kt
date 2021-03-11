@@ -14,16 +14,19 @@ import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
 import com.et.music.R
 import com.et.music.ui.model.SongResponseItem
+import com.et.music.ui.viewmodel.FragmentsViewmodel
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import kotlinx.android.synthetic.main.fragment_song_detail.*
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import java.lang.reflect.Type
 import java.util.*
 import kotlin.collections.ArrayList
 
 class SongDetailFragment : Fragment() {
     private val preferences: SharedPreferences by inject()
+    private val viewmodel: FragmentsViewmodel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater,
