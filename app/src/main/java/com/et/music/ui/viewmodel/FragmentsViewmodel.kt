@@ -16,7 +16,7 @@ import java.lang.reflect.Type
 class FragmentsViewmodel(val preferences: SharedPreferences) : ViewModel() {
 
 
-    var liveData = MutableLiveData<List<SongResponseItem>>()
+    val liveData = MutableLiveData<List<SongResponseItem>>()
     lateinit var playList: ArrayList<SongResponseItem>
 
      fun readLine(inputS:InputStream?): List<String>? {
